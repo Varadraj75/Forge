@@ -10,7 +10,14 @@ A landing page for **Forge**, a hackathon-driven platform for innovation program
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
+npm run dev      # start dev server at http://localhost:3000
+```
+
+In a separate terminal or for testing and quality checks:
+
+```bash
+npm run lint     # run ESLint
+npm test         # run Vitest unit tests
 ```
 
 Production build:

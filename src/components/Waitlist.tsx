@@ -125,12 +125,25 @@ export default function Waitlist() {
                 </div>
               ) : (
                 <form onSubmit={onSubmit} noValidate className="space-y-5">
-                  <div className="grid grid-cols-2 gap-2 rounded-full border border-ink/10 bg-paper p-1">
+                  <div
+                    role="radiogroup"
+                    aria-label="Participation type"
+                    className="grid grid-cols-2 gap-2 rounded-full border border-ink/10 bg-paper p-1"
+                  >
                     {intents.map((it) => (
                       <button
                         type="button"
+                        role="radio"
+                        aria-checked={form.intent === it.id}
+                        tabIndex={form.intent === it.id ? 0 : -1}
                         key={it.id}
                         onClick={() => update("intent", it.id)}
+                        onKeyDown={(e) => {
+                          if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowUp") {
+                            e.preventDefault();
+                            update("intent", it.id === "company" ? "builder" : "company");
+                          }
+                        }}
                         className={`rounded-full px-3 py-2 text-sm font-medium transition-colors ${
                           form.intent === it.id
                             ? "bg-ink text-paper"
@@ -221,22 +234,31 @@ function Field({
   placeholder?: string;
   autoComplete?: string;
 }) {
+  const errorId = error ? `${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-error` : undefined;
+
   return (
-    <label className="block">
-      <span className="mb-1.5 block text-xs font-medium text-ink/70">{label}</span>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        autoComplete={autoComplete}
-        aria-invalid={!!error}
-        className={`w-full rounded-xl border bg-paper px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink/30 focus:border-ink ${
-          error ? "border-red-400" : "border-ink/12"
-        }`}
-      />
-      {error && <span className="mt-1 block text-xs text-red-600">{error}</span>}
-    </label>
+    <div>
+      <label className="block">
+        <span className="mb-1.5 block text-xs font-medium text-ink/70">{label}</span>
+        <input
+          type={type}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          autoComplete={autoComplete}
+          aria-invalid={!!error}
+          aria-describedby={errorId}
+          className={`w-full rounded-xl border bg-paper px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink/30 focus:border-ink ${
+            error ? "border-red-400" : "border-ink/12"
+          }`}
+        />
+      </label>
+      {error && (
+        <span id={errorId} role="alert" className="mt-1 block text-xs text-red-600">
+          {error}
+        </span>
+      )}
+    </div>
   );
 }
 

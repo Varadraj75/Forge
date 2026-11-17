@@ -6,7 +6,7 @@ import { Logo, Menu, Close, ArrowRight } from "./icons";
 const links = [
   { label: "Platform", href: "#platform" },
   { label: "How it works", href: "#outcomes" },
-  { label: "FAQ", href: "#customers" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 export default function Navbar() {
