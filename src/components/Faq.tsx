@@ -29,7 +29,7 @@ export default function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="customers" className="relative overflow-hidden bg-ink py-24 sm:py-32">
+    <section id="faq" className="relative overflow-hidden bg-ink py-24 sm:py-32">
       <div aria-hidden className="glow-line absolute inset-x-0 top-0" />
       <div
         aria-hidden

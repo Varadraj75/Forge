@@ -1,18 +1,11 @@
 /**
  * leads-store.ts
  * -------------------------------------------------------------------------
- * A tiny in-memory store for demo / waitlist submissions.
- *
- * This intentionally keeps the surface area small so the focus stays on the
- * frontend. In production you would replace the array below with a real
- * datastore (Postgres via Prisma/Drizzle, or a hosted KV) and make
- * `addLead` / `listLeads` async. The route handler in app/api/leads/route.ts
- * already awaits nothing extra, so swapping the implementation is a one-file
- * change.
- *
- * Note: on a serverless host (Vercel) this resets on cold start. That is fine
- * for a screening demo; a DB removes the limitation in production.
+ * Pluggable lead store with adapter architecture supporting in-memory,
+ * file-backed JSON storage, and database adapters (Postgres/Prisma/Supabase).
  */
+
+import { createStorageAdapter, type LeadsStorageAdapter } from "./storage-adapter";
 
 export type Intent = "company" | "builder";
 
@@ -30,20 +23,35 @@ export interface LeadInput {
   email: unknown;
   organization: unknown;
   intent: unknown;
+  hp?: unknown; // Honeypot field for bot filtering
 }
 
-const leads: Lead[] = [];
+let activeAdapter: LeadsStorageAdapter = createStorageAdapter();
+
+export function setStorageAdapter(adapter: LeadsStorageAdapter): void {
+  activeAdapter = adapter;
+}
+
+export function getStorageAdapter(): LeadsStorageAdapter {
+  return activeAdapter;
+}
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export interface ValidationResult {
   ok: boolean;
+  isSpam?: boolean;
   errors: Record<string, string>;
   value?: Omit<Lead, "id" | "createdAt">;
 }
 
-/** Server-side validation. Never trust the client. */
+/** Server-side validation with honeypot spam protection. */
 export function validateLead(input: LeadInput): ValidationResult {
+  // If honeypot is populated, it is a bot submission
+  if (typeof input.hp === "string" && input.hp.trim().length > 0) {
+    return { ok: false, isSpam: true, errors: {} };
+  }
+
   const errors: Record<string, string> = {};
 
   const name = typeof input.name === "string" ? input.name.trim() : "";
@@ -67,24 +75,21 @@ export function validateLead(input: LeadInput): ValidationResult {
   };
 }
 
-export function addLead(value: Omit<Lead, "id" | "createdAt">): Lead {
-  // de-dupe by email so a double-submit doesn't create noise
-  const existing = leads.find((l) => l.email === value.email);
-  if (existing) return existing;
-
-  const lead: Lead = {
-    id: `ld_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 7)}`,
-    ...value,
-    createdAt: new Date().toISOString(),
-  };
-  leads.push(lead);
-  return lead;
+export async function addLead(value: Omit<Lead, "id" | "createdAt">): Promise<Lead> {
+  return await activeAdapter.addLead(value);
 }
 
-export function listLeads(): Lead[] {
-  return [...leads];
+export async function listLeads(): Promise<Lead[]> {
+  return await activeAdapter.listLeads();
 }
 
-export function leadCount(): number {
-  return leads.length;
+export async function leadCount(): Promise<number> {
+  return await activeAdapter.leadCount();
+}
+
+/** Reset helper for test environments only. */
+export async function _resetLeadsForTesting(): Promise<void> {
+  if (process.env.NODE_ENV === "test" && activeAdapter.clear) {
+    await activeAdapter.clear();
+  }
 }
