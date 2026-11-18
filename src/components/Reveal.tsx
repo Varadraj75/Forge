@@ -15,8 +15,19 @@ export default function Reveal({ children, className = "", delay = 0, as = "div"
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
+    // If user prefers reduced motion, reveal immediately
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setShown(true);
+      return;
+    }
+
     const el = ref.current;
     if (!el) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setShown(true);
+      return;
+    }
 
     const io = new IntersectionObserver(
       (entries) => {
@@ -27,7 +38,7 @@ export default function Reveal({ children, className = "", delay = 0, as = "div"
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -5% 0px" }
     );
 
     io.observe(el);

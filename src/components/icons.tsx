@@ -130,7 +130,13 @@ export function Logo({ className = "", invert = false }: { className?: string; i
   return (
     <span className={`inline-flex items-center gap-2 ${className}`}>
       <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden>
-        <rect width="32" height="32" rx="8" fill={invert ? "#F5F6F4" : "#0A0A0B"} />
+        <rect
+          width="32"
+          height="32"
+          rx="8"
+          fill={invert ? "#F5F6F4" : "#0A0A0B"}
+          className={invert ? "fill-paper" : "fill-ink dark:fill-paper"}
+        />
         <path
           d="M11 9h11v3.4h-7.4v3.1H21v3.3h-6.4V24H11V9Z"
           fill="#C7F23C"
@@ -138,7 +144,7 @@ export function Logo({ className = "", invert = false }: { className?: string; i
       </svg>
       <span
         className={`font-display text-[19px] font-extrabold tracking-tightest ${
-          invert ? "text-paper" : "text-ink"
+          invert ? "text-paper" : "text-ink dark:text-paper"
         }`}
       >
         Forge

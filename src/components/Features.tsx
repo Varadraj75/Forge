@@ -24,18 +24,18 @@ function FeatureRow({ id, icon, kicker, title, body, points, mock, flip }: Featu
   return (
     <div id={id} className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
       <Reveal className={flip ? "lg:order-2" : ""}>
-        <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-ink/10 bg-paper-card text-ink">
+        <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-ink/10 bg-paper-card text-ink shadow-sm dark:border-ink-line dark:bg-ink-raised dark:text-paper">
           {icon}
         </div>
         <p className="kicker mt-6">{kicker}</p>
-        <h3 className="mt-3 max-w-md text-balance font-display text-3xl font-bold leading-tight tracking-tight text-ink sm:text-[34px]">
+        <h3 className="mt-3 max-w-md text-balance font-display text-3xl font-bold leading-tight tracking-tight text-ink dark:text-paper sm:text-[34px]">
           {title}
         </h3>
-        <p className="mt-4 max-w-md text-base leading-relaxed text-ink/65">{body}</p>
+        <p className="mt-4 max-w-md text-base leading-relaxed text-ink/65 dark:text-paper/70">{body}</p>
         <ul className="mt-6 space-y-3">
           {points.map((p) => (
-            <li key={p} className="flex items-start gap-3 text-[15px] text-ink/80">
-              <span className="mt-0.5 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-accent/30 text-ink">
+            <li key={p} className="flex items-start gap-3 text-[15px] text-ink/80 dark:text-paper/80">
+              <span className="mt-0.5 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-accent/30 text-ink dark:bg-accent/20 dark:text-accent">
                 <Check width={13} height={13} strokeWidth={2.2} />
               </span>
               {p}
@@ -44,7 +44,7 @@ function FeatureRow({ id, icon, kicker, title, body, points, mock, flip }: Featu
         </ul>
         <a
           href="#waitlist"
-          className="group mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-ink"
+          className="group mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-ink dark:text-paper"
         >
           Learn more
           <ArrowRight
@@ -68,10 +68,10 @@ export default function Features() {
       <div className="shell">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="kicker">The platform</p>
-          <h2 className="mt-4 text-balance font-display text-4xl font-extrabold tracking-tightest text-ink sm:text-5xl">
+          <h2 className="mt-4 text-balance font-display text-4xl font-extrabold tracking-tightest text-ink dark:text-paper sm:text-5xl">
             One platform, the whole talent loop
           </h2>
-          <p className="mt-5 text-lg text-ink/60">
+          <p className="mt-5 text-lg text-ink/60 dark:text-paper/60">
             Sourcing ideas, validating skills, hiring, upskilling. Forge runs
             each stage as a live program, not a slide deck.
           </p>
@@ -146,7 +146,7 @@ function ChallengeBoardMock() {
     { t: "Submitted", n: 8, cards: ["Fraud-net v2"], done: true },
   ];
   return (
-    <div className="overflow-hidden rounded-xl2 border border-ink/10 bg-ink p-5 shadow-[0_30px_80px_-40px_rgba(10,10,11,0.5)]">
+    <div className="overflow-hidden rounded-xl2 border border-ink/10 bg-ink p-5 shadow-[0_30px_80px_-40px_rgba(10,10,11,0.5)] dark:border-ink-line">
       <div className="mb-4 flex items-center justify-between">
         <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-dark">
           Sample challenge · board
@@ -191,40 +191,40 @@ function CandidateMock() {
     { k: "Collaboration", v: 86 },
   ];
   return (
-    <div className="overflow-hidden rounded-xl2 border border-ink/10 bg-paper-card p-6 shadow-[0_30px_80px_-40px_rgba(10,10,11,0.25)]">
+    <div className="overflow-hidden rounded-xl2 border border-ink/10 bg-paper-card p-6 shadow-[0_30px_80px_-40px_rgba(10,10,11,0.25)] dark:border-ink-line dark:bg-ink-soft dark:shadow-[0_30px_80px_-40px_rgba(0,0,0,0.6)]">
       <div className="flex items-center gap-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-ink font-display text-base font-bold text-accent">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-ink font-display text-base font-bold text-accent dark:bg-ink-raised">
           KI
         </div>
         <div>
-          <p className="font-display text-lg font-bold tracking-tight text-ink">K. Iyer</p>
-          <p className="font-mono text-xs text-muted">Backend · Submission #112</p>
+          <p className="font-display text-lg font-bold tracking-tight text-ink dark:text-paper">K. Iyer</p>
+          <p className="font-mono text-xs text-muted dark:text-muted-dark">Backend · Submission #112</p>
         </div>
         <div className="ml-auto text-right">
-          <p className="font-mono text-[10px] uppercase tracking-wider text-muted">Match</p>
-          <p className="font-display text-2xl font-extrabold text-ink">96%</p>
+          <p className="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-muted-dark">Match</p>
+          <p className="font-display text-2xl font-extrabold text-ink dark:text-paper">96%</p>
         </div>
       </div>
 
       <div className="mt-6 space-y-3">
         {skills.map((s) => (
           <div key={s.k}>
-            <div className="flex justify-between text-xs text-ink/60">
+            <div className="flex justify-between text-xs text-ink/60 dark:text-paper/60">
               <span>{s.k}</span>
               <span className="font-mono">{s.v}</span>
             </div>
-            <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-ink/10">
-              <div className="h-full rounded-full bg-ink" style={{ width: `${s.v}%` }} />
+            <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-ink/10 dark:bg-white/10">
+              <div className="h-full rounded-full bg-ink dark:bg-accent" style={{ width: `${s.v}%` }} />
             </div>
           </div>
         ))}
       </div>
 
-      <div className="mt-6 flex items-center gap-2 rounded-lg border border-ink/10 bg-paper p-3">
-        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent/30">
+      <div className="mt-6 flex items-center gap-2 rounded-lg border border-ink/10 bg-paper p-3 dark:border-ink-line dark:bg-ink">
+        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent/30 text-ink dark:bg-accent/20 dark:text-accent">
           <Check width={13} height={13} strokeWidth={2.2} />
         </span>
-        <span className="text-xs text-ink/70">Original work · passed integrity checks</span>
+        <span className="text-xs text-ink/70 dark:text-paper/70">Original work · passed integrity checks</span>
       </div>
     </div>
   );
@@ -233,7 +233,7 @@ function CandidateMock() {
 /* ---------- mock 3: validation / certificate ---------- */
 function ValidationMock() {
   return (
-    <div className="overflow-hidden rounded-xl2 border border-ink/10 bg-ink shadow-[0_30px_80px_-40px_rgba(10,10,11,0.5)]">
+    <div className="overflow-hidden rounded-xl2 border border-ink/10 bg-ink shadow-[0_30px_80px_-40px_rgba(10,10,11,0.5)] dark:border-ink-line">
       <div className="border-b border-ink-line px-5 py-3 font-mono text-xs text-muted-dark">
         evaluation · run #4012
       </div>
@@ -278,37 +278,39 @@ function TrackMock() {
     { t: "Sprint review", s: "todo" },
   ];
   return (
-    <div className="overflow-hidden rounded-xl2 border border-ink/10 bg-paper-card p-6 shadow-[0_30px_80px_-40px_rgba(10,10,11,0.25)]">
+    <div className="overflow-hidden rounded-xl2 border border-ink/10 bg-paper-card p-6 shadow-[0_30px_80px_-40px_rgba(10,10,11,0.25)] dark:border-ink-line dark:bg-ink-soft dark:shadow-[0_30px_80px_-40px_rgba(0,0,0,0.6)]">
       <div className="mb-5 flex items-center justify-between">
-        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted dark:text-muted-dark">
           AI-native track · Platform team
         </p>
-        <span className="rounded-full bg-ink px-2 py-0.5 font-mono text-[10px] text-accent">
+        <span className="rounded-full bg-ink px-2 py-0.5 font-mono text-[10px] text-accent dark:bg-paper dark:text-ink">
           63% complete
         </span>
       </div>
       <ol className="relative space-y-4 pl-6">
-        <span className="absolute left-[7px] top-2 h-[calc(100%-1rem)] w-px bg-ink/15" />
+        <span className="absolute left-[7px] top-2 h-[calc(100%-1rem)] w-px bg-ink/15 dark:bg-white/15" />
         {steps.map((step) => (
           <li key={step.t} className="relative">
             <span
               className={`absolute -left-6 top-1 inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border ${
                 step.s === "done"
-                  ? "border-ink bg-ink"
+                  ? "border-ink bg-ink dark:border-paper dark:bg-paper"
                   : step.s === "active"
                   ? "border-accent-deep bg-accent"
-                  : "border-ink/25 bg-paper"
+                  : "border-ink/25 bg-paper dark:border-white/20 dark:bg-ink"
               }`}
             />
             <span
               className={`text-sm ${
-                step.s === "todo" ? "text-ink/40" : "font-medium text-ink"
+                step.s === "todo"
+                  ? "text-ink/40 dark:text-paper/40"
+                  : "font-medium text-ink dark:text-paper"
               }`}
             >
               {step.t}
             </span>
             {step.s === "active" && (
-              <span className="ml-2 rounded-full bg-accent/30 px-2 py-0.5 font-mono text-[10px] text-ink">
+              <span className="ml-2 rounded-full bg-accent/30 px-2 py-0.5 font-mono text-[10px] text-ink dark:bg-accent/20 dark:text-accent">
                 in progress
               </span>
             )}

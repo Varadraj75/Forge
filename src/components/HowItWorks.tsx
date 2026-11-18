@@ -20,11 +20,11 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="outcomes" className="border-y border-ink/10 bg-paper-deep/60 py-20 sm:py-24">
+    <section id="outcomes" className="border-y border-ink/10 bg-paper-deep/60 py-20 transition-colors dark:border-ink-line dark:bg-ink-soft/40 sm:py-24">
       <div className="shell">
         <Reveal className="max-w-xl">
           <p className="kicker">How it works</p>
-          <h2 className="mt-3 text-balance font-display text-3xl font-extrabold tracking-tightest text-ink sm:text-4xl">
+          <h2 className="mt-3 text-balance font-display text-3xl font-extrabold tracking-tightest text-ink dark:text-paper sm:text-4xl">
             Three steps, no recruiter in the middle
           </h2>
         </Reveal>
@@ -34,10 +34,10 @@ export default function HowItWorks() {
             <Reveal key={s.n} delay={i * 80}>
               <div className="pt-5" style={{ borderTop: "2px solid transparent", borderImage: "var(--grad) 1" }}>
                 <p className="grad-text font-display text-2xl font-extrabold tracking-tightest">{s.n}</p>
-                <h3 className="mt-3 font-display text-xl font-bold tracking-tight text-ink">
+                <h3 className="mt-3 font-display text-xl font-bold tracking-tight text-ink dark:text-paper">
                   {s.title}
                 </h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-ink/65">{s.body}</p>
+                <p className="mt-3 text-[15px] leading-relaxed text-ink/65 dark:text-paper/70">{s.body}</p>
               </div>
             </Reveal>
           ))}

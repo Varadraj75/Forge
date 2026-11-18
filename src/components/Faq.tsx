@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, type KeyboardEvent } from "react";
 
 const faqs = [
   {
@@ -27,9 +27,28 @@ const faqs = [
 
 export default function Faq() {
   const [open, setOpen] = useState<number | null>(0);
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  function handleKeyDown(e: KeyboardEvent<HTMLButtonElement>, idx: number) {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const next = (idx + 1) % faqs.length;
+      buttonRefs.current[next]?.focus();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const prev = (idx - 1 + faqs.length) % faqs.length;
+      buttonRefs.current[prev]?.focus();
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      buttonRefs.current[0]?.focus();
+    } else if (e.key === "End") {
+      e.preventDefault();
+      buttonRefs.current[faqs.length - 1]?.focus();
+    }
+  }
 
   return (
-    <section id="customers" className="relative overflow-hidden bg-ink py-24 sm:py-32">
+    <section id="faq" className="relative overflow-hidden bg-ink py-24 sm:py-32">
       <div aria-hidden className="glow-line absolute inset-x-0 top-0" />
       <div
         aria-hidden
@@ -47,26 +66,42 @@ export default function Faq() {
         <div className="mx-auto mt-14 max-w-2xl divide-y divide-ink-line border-y border-ink-line">
           {faqs.map((f, i) => {
             const isOpen = open === i;
+            const questionId = `faq-question-${i}`;
+            const answerId = `faq-answer-${i}`;
+
             return (
               <div key={f.q}>
-                <button
-                  onClick={() => setOpen(isOpen ? null : i)}
-                  aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-6 py-5 text-left"
-                >
-                  <span className="font-display text-lg font-semibold text-paper">{f.q}</span>
-                  <span
-                    className={`flex h-7 w-7 flex-none items-center justify-center rounded-full border border-ink-line text-paper/70 transition-transform duration-300 ${
-                      isOpen ? "rotate-45" : ""
-                    }`}
-                    aria-hidden
+                <h3>
+                  <button
+                    id={questionId}
+                    ref={(el) => {
+                      buttonRefs.current[i] = el;
+                    }}
+                    type="button"
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    onKeyDown={(e) => handleKeyDown(e, i)}
+                    aria-expanded={isOpen}
+                    aria-controls={answerId}
+                    className="flex w-full items-center justify-between gap-6 py-5 text-left transition-colors focus-visible:rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                   >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-                      <path d="M12 5v14M5 12h14" />
-                    </svg>
-                  </span>
-                </button>
+                    <span className="font-display text-lg font-semibold text-paper">{f.q}</span>
+                    <span
+                      className={`flex h-7 w-7 flex-none items-center justify-center rounded-full border border-ink-line text-paper/70 transition-transform duration-300 ${
+                        isOpen ? "rotate-45" : ""
+                      }`}
+                      aria-hidden="true"
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                        <path d="M12 5v14M5 12h14" />
+                      </svg>
+                    </span>
+                  </button>
+                </h3>
                 <div
+                  id={answerId}
+                  role="region"
+                  aria-labelledby={questionId}
+                  aria-hidden={!isOpen}
                   className="grid transition-all duration-300 ease-out"
                   style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
                 >
